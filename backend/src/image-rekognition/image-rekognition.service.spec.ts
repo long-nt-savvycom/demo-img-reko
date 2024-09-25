@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ImageRekognitionService } from './image-rekognition.service';
-import { ConfigService } from '@nestjs/config';  // Import ConfigService
+import { ConfigService } from '@nestjs/config';
 import { Rekognition } from 'aws-sdk';
 
 jest.mock('aws-sdk', () => {
@@ -59,7 +59,7 @@ describe('ImageRekognitionService', () => {
         { Name: 'Car', Confidence: 96.1 },
       ],
     };
-    
+
     (rekognition.detectLabels().promise as jest.Mock).mockResolvedValueOnce(mockLabels);
 
     const result = await service.detectLabels(mockImageBuffer);
@@ -78,6 +78,8 @@ describe('ImageRekognitionService', () => {
 
     (rekognition.detectLabels().promise as jest.Mock).mockRejectedValueOnce(mockError);
 
-    await expect(service.detectLabels(mockImageBuffer)).rejects.toThrow('AWS Rekognition Error');
+    await expect(service.detectLabels(mockImageBuffer)).rejects.toThrow(
+      'AWS Rekognition Error',
+    );
   });
 });
