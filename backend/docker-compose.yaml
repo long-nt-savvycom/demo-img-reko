@@ -1,0 +1,51 @@
+version: '3.7'
+services:
+  ysp-database-service:
+    image: postgres:13
+    container_name: ysp-database-postgres
+    ports:
+      - '${DATABASE_PORT}:5432'
+    networks:
+      - ysp-net
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD} # TODO: create new roles for dev and test
+    volumes:
+      - ysp-database-postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  ysp-caching-service:
+    image: 'redis:latest'
+    container_name: ysp-caching-redis
+    hostname: redis
+    networks:
+      - ysp-net
+    ports:
+      - '${CACHING_PORT}:6379'
+    command: '--requirepass ${CACHING_PASSWORD}'
+    volumes:
+      - ysp-caching-redis-volume:/data
+    restart: unless-stopped
+
+  ysp-backend-service:
+    container_name: ysp-server-nestjs
+    build:
+      context: ./
+    ports:
+      - '${SERVER_HTTP_PORT}:${SERVER_HTTP_PORT}'
+      - '${SERVER_SOCKET_PORT}:${SERVER_SOCKET_PORT}'
+    networks:
+      - ysp-net
+    depends_on:
+      - ysp-database-service
+      - ysp-caching-service
+    restart: unless-stopped
+
+volumes:
+  ysp-database-postgres_data:
+  ysp-caching-redis-volume:
+
+networks:
+  ysp-net:
+    driver: bridge
