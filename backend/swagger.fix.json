@@ -1,0 +1,27 @@
+{
+  "requestBody": {
+    "content": {
+      "multipart/form-data": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "The title of the post"
+            },
+            "file": {
+              "type": "string",
+              "format": "binary",
+              "description": "The file to upload"
+            }
+          },
+          "required": [
+            "title",
+            "file"
+          ]
+        }
+      }
+    },
+    "required": true
+  }
+}

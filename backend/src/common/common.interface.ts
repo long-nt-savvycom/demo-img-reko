@@ -10,28 +10,28 @@ import { FastifyRequest } from 'fastify';
 import { tags } from 'typia';
 
 export interface UniqueEntity {
-  id: number;
+  id?: number;
 }
 
 export interface IEntity extends UniqueEntity {
-  created_at: Date;
-  updated_at: Date;
-  deleted_at: Date | null;
+  created_at?: Date;
+  updated_at?: Date;
+  deleted_at?: Date | null;
 }
 
 @Entity()
-export class BaseEntity implements IEntity {
+export abstract class BaseEntity implements IEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at?: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at?: Date;
 
   @DeleteDateColumn()
-  deleted_at: Date | null;
+  deleted_at?: Date | null;
 }
 
 export const STRING_MAX_LEN = 50;

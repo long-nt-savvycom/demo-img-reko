@@ -12,6 +12,7 @@
 - uncomment service ysp-server-nestjs in docker-compose.yaml file
 - change servers > urls in nestia.config.js file to your production domain like SERVER_DOMAIN_URL in file .env
 - run command: npm run swagger:generate
+- replace file swagger.fix.json into file swagger.json api Post /post > requestBody
 - run command: docker compose up -d
 - then you will bring this image to every deployment environment
 

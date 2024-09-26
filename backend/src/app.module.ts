@@ -1,18 +1,30 @@
+import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
-import { AuthGuard } from './auth/auth.guard';
-import { AuthModule } from './auth/auth.module';
-import { DatabaseModule } from './database/database.module';
-import { PostModule } from './post/post.module';
-import { UserModule } from './user/user.module';
-import { ImageRekognitionModule } from './image-rekognition/image-rekognition.module';
+import { DatabaseModule } from './libs/database/database.module';
+import { ImageRekognitionModule } from './libs/image-rekognition/image-rekognition.module';
+import { AuthGuard } from './modules/auth/auth.guard';
+import { AuthModule } from './modules/auth/auth.module';
+import { PostModule } from './modules/post/post.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+
+    BullModule.forRootAsync({
+      useFactory: async (configService: ConfigService) => ({
+        redis: {
+          host: configService.get<string>('CACHING_HOST'),
+          port: configService.get<number>('CACHING_PORT'),
+          password: configService.get<string>('CACHING_PASSWORD'),
+        },
+      }),
+      inject: [ConfigService],
     }),
     DatabaseModule,
     PostModule,

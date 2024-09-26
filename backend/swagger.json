@@ -41,9 +41,24 @@
         "parameters": [],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePostDto"
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "The title of the post"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The file to upload"
+                  }
+                },
+                "required": [
+                  "title",
+                  "file"
+                ]
               }
             }
           },
@@ -55,7 +70,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IPost"
+                  "$ref": "#/components/schemas/IPostRes"
                 }
               }
             }
@@ -123,7 +138,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IPost.Nullable"
+                  "$ref": "#/components/schemas/IPostRes.Nullable"
                 }
               }
             }
@@ -166,7 +181,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UpdateResult"
+                  "type": "boolean"
                 }
               }
             }
@@ -199,7 +214,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UpdateResult"
+                  "type": "boolean"
                 }
               }
             }
@@ -283,37 +298,24 @@
             "type": "string",
             "maxLength": 50,
             "minLength": 1
-          },
-          "content": {
-            "type": "string",
-            "maxLength": 500,
-            "minLength": 10
-          },
-          "isPublished": {
-            "type": "boolean"
           }
         },
         "nullable": false,
         "required": [
-          "title",
-          "content",
-          "isPublished"
+          "title"
         ]
       },
-      "IPost": {
+      "IPostRes": {
         "type": "object",
         "properties": {
           "title": {
             "type": "string"
           },
-          "content": {
+          "image_url": {
             "type": "string"
           },
-          "views": {
-            "type": "number"
-          },
-          "isPublished": {
-            "type": "boolean"
+          "status": {
+            "$ref": "#/components/schemas/PostStatus"
           },
           "created_at": {
             "type": "string",
@@ -325,67 +327,27 @@
           },
           "deleted_at": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
           },
           "id": {
             "type": "number"
-          },
-          "user": {
-            "oneOf": [
-              {
-                "type": "number"
-              },
-              {
-                "$ref": "#/components/schemas/IUser"
-              }
-            ]
           }
         },
         "nullable": false,
         "required": [
           "title",
-          "content",
-          "views",
-          "isPublished",
-          "created_at",
-          "updated_at",
-          "deleted_at",
-          "id"
+          "image_url",
+          "status"
         ]
       },
-      "IUser": {
-        "type": "object",
-        "properties": {
-          "password": {
-            "type": "string"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "deleted_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "id": {
-            "type": "number"
-          },
-          "username": {
-            "type": "string"
-          }
-        },
-        "nullable": false,
-        "required": [
-          "password",
-          "created_at",
-          "updated_at",
-          "deleted_at",
-          "id",
-          "username"
+      "PostStatus": {
+        "type": "string",
+        "enum": [
+          "open",
+          "rejected",
+          "approved",
+          "inappropriate_detected"
         ]
       },
       "GenericFilterIPost": {
@@ -403,15 +365,15 @@
           "orderBy": {
             "type": "string",
             "enum": [
-              "views",
-              "user",
               "created_at",
-              "updated_at",
               "deleted_at",
               "id",
+              "image_url",
+              "status",
               "title",
-              "content",
-              "isPublished"
+              "updated_at",
+              "user",
+              "userId"
             ]
           },
           "sortOrder": {
@@ -434,7 +396,7 @@
           "posts": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/IPost"
+              "$ref": "#/components/schemas/IPostRes"
             }
           },
           "total": {
@@ -447,20 +409,17 @@
           "total"
         ]
       },
-      "IPost.Nullable": {
+      "IPostRes.Nullable": {
         "type": "object",
         "properties": {
           "title": {
             "type": "string"
           },
-          "content": {
+          "image_url": {
             "type": "string"
           },
-          "views": {
-            "type": "number"
-          },
-          "isPublished": {
-            "type": "boolean"
+          "status": {
+            "$ref": "#/components/schemas/PostStatus"
           },
           "created_at": {
             "type": "string",
@@ -472,88 +431,37 @@
           },
           "deleted_at": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
           },
           "id": {
             "type": "number"
-          },
-          "user": {
-            "oneOf": [
-              {
-                "type": "number"
-              },
-              {
-                "$ref": "#/components/schemas/IUser"
-              }
-            ]
           }
         },
         "nullable": true,
         "required": [
           "title",
-          "content",
-          "views",
-          "isPublished",
-          "created_at",
-          "updated_at",
-          "deleted_at",
-          "id"
+          "image_url",
+          "status"
         ]
       },
       "UpdatePostDto": {
         "type": "object",
         "properties": {
-          "title": {
+          "status": {
             "type": "string",
-            "maxLength": 50,
-            "minLength": 1
-          },
-          "content": {
-            "type": "string",
-            "maxLength": 500,
-            "minLength": 10
-          },
-          "isPublished": {
-            "type": "boolean"
+            "enum": [
+              "approved",
+              "inappropriate_detected",
+              "open",
+              "rejected"
+            ]
           }
         },
         "nullable": false,
         "required": [
-          "title",
-          "content",
-          "isPublished"
+          "status"
         ]
-      },
-      "UpdateResult": {
-        "type": "object",
-        "properties": {
-          "raw": {
-            "description": "Raw SQL result returned by executed query."
-          },
-          "affected": {
-            "type": "number",
-            "description": "Number of affected rows/documents\nNot all drivers support this"
-          },
-          "generatedMaps": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ObjectLiteral"
-            },
-            "description": "Generated values returned by a database.\nHas entity-like structure (not just column database name and values)."
-          }
-        },
-        "nullable": false,
-        "required": [
-          "raw",
-          "generatedMaps"
-        ],
-        "description": "Result object returned by UpdateQueryBuilder execution."
-      },
-      "ObjectLiteral": {
-        "type": "object",
-        "properties": {},
-        "nullable": false,
-        "description": "Interface of the simple literal object with any string keys."
       },
       "AuthBody": {
         "type": "object",

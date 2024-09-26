@@ -6,6 +6,9 @@ import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import multipart from '@fastify/multipart';
+import fastifyStatic from '@fastify/static'; // Import the static plugin
+import { join } from 'path'; // Import path for directory handling
 
 async function bootstrap() {
   const logger = new Logger(bootstrap.name);
@@ -18,7 +21,13 @@ async function bootstrap() {
 
   await app.register(fastifyHelmet as any); //TODO: fix type version fastify and helmet
   await app.register(fastifyCsrf as any); //TODO: fix type version fastify and csrf
+  await app.register(multipart as any);
 
+  // Register the static file serving
+  await app.register(fastifyStatic as any, {
+    root: join(__dirname, '../..', 'uploads'),
+    prefix: '/uploads/', // The URL prefix for accessing static files
+  });
 
   const configService = app.get(ConfigService);
 
@@ -26,6 +35,7 @@ async function bootstrap() {
 
   const serverUrl = `http://localhost:${serverPort}`;
 
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const docs = require('../../swagger.json');
   docs.servers = [{ url: configService.get('SERVER_DOMAIN_URL') || serverUrl }];
   SwaggerModule.setup('swagger', app, docs);
