@@ -7,7 +7,7 @@ export interface IBaseRepository<T extends BaseEntity> {
 
   updateEntity(query: UniqueEntity, updateBody: Partial<T>): Promise<boolean>;
 
-  deleteEntity(query: UniqueEntity, updateBody: Partial<T>): Promise<boolean>;
+  deleteEntity(query: UniqueEntity): Promise<boolean>;
 
   findPaging(filter: GenericFilter<T>, query: Partial<T>): Promise<[T[], number]>;
 }
