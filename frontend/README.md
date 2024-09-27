@@ -18,12 +18,6 @@ pnpm dev
 bun dev
 ```
 
-### Production 
-
-```bash
-docker compose up -d
-```
-
 ### Testing 
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
