@@ -10,6 +10,7 @@ coverage
 test
 
 # Environment (contains sensitive data)
+uploads
 
 # Files not required for production
 .editorconfig
@@ -19,3 +20,8 @@ README.md
 .eslintrc.js
 .prettierrc
 nodemon.json
+*.example
+.env
+deploy.sh
+swagger.fix.json
+

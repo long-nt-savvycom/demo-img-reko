@@ -15,7 +15,9 @@ async function bootstrap() {
 
   const app: NestFastifyApplication = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    new FastifyAdapter({
+      logger: process.env.ENV_NAME !== 'production', // Enable Fastify's built-in logger
+    }),
     { cors: true },
   );
 

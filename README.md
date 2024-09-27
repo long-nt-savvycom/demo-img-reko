@@ -11,6 +11,7 @@ This project is a content moderation service that allows moderators to review po
   - Image moderation using AWS Rekognition
   - Status tracking (open, approved, rejected)
   - API endpoints for managing posts
+  - [Backend document here](./backend/README.md)
   
 - **Frontend (Next.js)**:
   - View a list of submitted posts
@@ -21,12 +22,12 @@ This project is a content moderation service that allows moderators to review po
 
 - **Backend**: Nest.js, TypeScript, AWS SDK
 - **Frontend**: Next.js, React, TypeScript
-- **Database**: (Specify if you are using one, e.g., PostgreSQL, MongoDB)
+- **Database**:  PostgreSQL
 - **Cloud Services**: AWS Rekognition
 
 ## Prerequisites
 
-- Node.js (version 14 or above)
+- Node.js (version 18 or above)
 - npm or yarn
 - AWS account (for Rekognition)
 - Docker (optional, for containerization)

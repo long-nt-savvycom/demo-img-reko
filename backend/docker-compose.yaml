@@ -34,17 +34,19 @@ services:
       context: ./
     ports:
       - '${SERVER_HTTP_PORT}:${SERVER_HTTP_PORT}'
-      - '${SERVER_SOCKET_PORT}:${SERVER_SOCKET_PORT}'
     networks:
       - ysp-net
     depends_on:
       - ysp-database-service
       - ysp-caching-service
+    volumes:
+      - ysp-api-volume:/usr/src/app/uploads
     restart: unless-stopped
 
 volumes:
   ysp-database-postgres_data:
   ysp-caching-redis-volume:
+  ysp-api-volume:
 
 networks:
   ysp-net:
