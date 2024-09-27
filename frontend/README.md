@@ -4,6 +4,10 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 First, run the development server:
 
+- Add domain backend into file file next.config.mjs
+- Add URI backend into file .env (copy from .env.example)
+
+### Development 
 ```bash
 npm run dev
 # or
@@ -14,7 +18,32 @@ pnpm dev
 bun dev
 ```
 
+### Production 
+
+```bash
+docker compose up -d
+```
+
+### Testing 
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+- Sign up with api
+
+```
+curl -X 'POST' \
+  'http://localhost:3001/auth/signup' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "username": "testuser",
+  "password": "passwordhere"
+}'
+
+```
+- Login
+- Create new post
+- Wait for 2-3s and reload page to get status
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

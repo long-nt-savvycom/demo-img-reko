@@ -18,3 +18,5 @@
 
 ## Swagger
 - http://{domain}/swagger (For example: `http://localhost:3000/swagger`)
+
+- ![Swagger](../docs/imgs/swagger.png)

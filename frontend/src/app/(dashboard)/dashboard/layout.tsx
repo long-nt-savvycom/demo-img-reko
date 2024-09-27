@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { useAuthStore } from "../../store/authStore";
+import { useEffect } from "react";
 
 export default function RootLayout({
   children,
@@ -11,16 +12,21 @@ export default function RootLayout({
   const setToken = useAuthStore((state) => state.setToken);
   const token = useAuthStore((state) => state.token);
 
-  const savedToken = localStorage.getItem("token");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedToken = localStorage.getItem("token");
 
-  if (savedToken) {
-    setToken(savedToken);
-  } else if (token) {
-    localStorage.setItem("token", token);
+      if (savedToken) {
+        setToken(savedToken);
+      } else if (token) {
+        localStorage.setItem("token", token);
+      }
+    }
+  }, [token, setToken]);
+
+  if (!token && typeof window !== "undefined" && !localStorage.getItem("token")) {
+    redirect("/signin");
   }
 
-  if (!token && !savedToken) {
-    return redirect("/signin");
-  }
   return <div>{children}</div>;
 }

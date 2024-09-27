@@ -17,6 +17,7 @@ This project is a content moderation service that allows moderators to review po
   - View a list of submitted posts
   - Approve or reject posts
   - View posts with images
+  - [Frontend document here](./frontend/README.md)
 
 ## Technology Stack
 
@@ -32,6 +33,12 @@ This project is a content moderation service that allows moderators to review po
 - AWS account (for Rekognition)
 - Docker (optional, for containerization)
 
-## Project Structure
+## Demo
+
+### Dashboard
+- ![Dashboard](./docs/imgs/dashboard.png)
+
+### Login
+- ![Login](./docs/imgs/login.png)
 
 
