@@ -1,3 +1,8 @@
+## Prerequisite
+- AWS credential with Rekognition Admin role
+- Docker and docker compose or Postgres DB and Redis installed on-premise
+- Nodejs or Nvm for development
+
 ## Development
 - clone source code
 - change .env.example to .env
