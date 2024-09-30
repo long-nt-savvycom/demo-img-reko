@@ -10,6 +10,7 @@ export interface IPost {
   title: string;
   status: string;
   created_at: string;
+  label?: string;
 }
 
 export interface IPostResponse {

@@ -47,5 +47,5 @@ export const apiCall = async <T>(
 
 export const convertTimestamp = (time: string) => {
   const date = new Date(time);
-  return date.getTime();
+  return date.toLocaleTimeString();
 };

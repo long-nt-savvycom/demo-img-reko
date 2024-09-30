@@ -26,6 +26,7 @@ export interface IPost extends IEntity, UniquePost, UserManyPost {
   title: string;
   image_url: string;
   status: PostStatus;
+  label?: string | null;
 }
 
 export interface IPostRes extends Omit<IPost, keyof UserManyPost> {}

@@ -57,6 +57,7 @@ export default function Dashboard() {
                 <th className="py-3 px-4 text-left">Title</th>
                 <th className="py-3 px-4 text-left">Created At</th>
                 <th className="py-3 px-4 text-left">Status</th>
+                <th className="py-3 px-4 text-left">Detected Bad Label</th>
               </tr>
             </thead>
             <tbody>
@@ -69,14 +70,17 @@ export default function Dashboard() {
                         alt={post.title}
                         width={20}
                         height={20}
-                        className="w-16 h-16 rounded-lg cursor-pointer"
+                        className={`w-16 h-16 rounded-lg cursor-pointer ${
+                          post.status === "inappropriate_detected" ||
+                          post.status === "rejected"
+                            ? "blur-sm"
+                            : ""
+                        }`}
                       />
                     </PopupPrevew>
                   </td>
                   <td className="py-3 px-4">{post.title}</td>
-                  <td className="py-3 px-4">
-                    {convertTimestamp(post.created_at)}
-                  </td>
+                  <td className="py-3 px-4">{convertTimestamp(post.created_at)}</td>
                   <td className="py-3 px-4">
                     <PopupChangeStatus post={post} getPost={getPosts}>
                       <span
@@ -92,6 +96,7 @@ export default function Dashboard() {
                       </span>
                     </PopupChangeStatus>
                   </td>
+                  <td className="py-3 px-4">{post.label || ""}</td>
                 </tr>
               ))}
             </tbody>

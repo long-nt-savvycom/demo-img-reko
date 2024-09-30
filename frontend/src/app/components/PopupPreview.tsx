@@ -35,7 +35,11 @@ export default function PopupPrevew({ children, post }: Props) {
               <Image
                 src={post.image_url}
                 alt={post.title}
-                className="object-cover rounded-lg"
+                className={`object-cover rounded-lg ${
+                  post.status === "inappropriate_detected" || post.status === "rejected"
+                    ? "blur-sm"
+                    : ""
+                }`}
                 width={384}
                 height={288}
               />
